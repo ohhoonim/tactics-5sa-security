@@ -7,6 +7,10 @@ plugins {
 group = 'dev.ohhoonim'
 version = '0.0.1-SNAPSHOT'
 
+ext {
+	set('springModulithVersion', '2.0.1')
+}
+
 java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(25)
@@ -21,8 +25,17 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	// 도메인 모듈  
+	implementation 'org.springframework.modulith:spring-modulith-starter-jdbc'
+	implementation 'org.springframework.modulith:spring-modulith-starter-insight' // actuator 포함
+	testImplementation 'org.springframework.modulith:spring-modulith-starter-test'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.modulith:spring-modulith-bom:${springModulithVersion}"
+	}
 }

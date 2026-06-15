@@ -1,4 +1,4 @@
-package dev.ohhoonim.post;
+package dev.ohhoonim.business.board.endpoint;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

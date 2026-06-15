@@ -1,4 +1,4 @@
-package dev.ohhoonim.post;
+package dev.ohhoonim.business.board.endpoint;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

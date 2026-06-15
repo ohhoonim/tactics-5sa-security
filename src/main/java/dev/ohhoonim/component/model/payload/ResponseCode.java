@@ -1,4 +1,4 @@
-package dev.ohhoonim.component;
+package dev.ohhoonim.component.model.payload;
 
 public enum ResponseCode {
     SUCCESS, 

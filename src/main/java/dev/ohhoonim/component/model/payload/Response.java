@@ -1,10 +1,10 @@
-package dev.ohhoonim.component;
+package dev.ohhoonim.component.model.payload;
 
 /** 
  * 
  * @see dev.ohhoonim.component.model.payload.DefaultResponseHandler 
  **/ 
-public sealed interface Response  {
+public sealed interface Response extends Payload {
 
     public record Success<T>(
         ResponseCode code,

@@ -1,4 +1,4 @@
-package dev.ohhoonim.user;
+package dev.ohhoonim.business.board.endpoint;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;

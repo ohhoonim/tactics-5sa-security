@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.function.RouterFunction;
 import org.springframework.web.servlet.function.RouterFunctions;
 import org.springframework.web.servlet.function.ServerResponse;
+import dev.ohhoonim.component.model.payload.DefaultEndpointHandler;
 import dev.ohhoonim.component.model.unit.Endpoint;
 
 @Configuration
@@ -19,6 +20,7 @@ public class PostRouter implements Endpoint {
                 .POST("", handler::addPost)
                 .PUT("/{id}", handler::modifyPost)
                 .DELETE("/{id}", handler::removePost)
-        ).build();
+        ).filter(new DefaultEndpointHandler())
+        .build();
     }
 }

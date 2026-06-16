@@ -53,24 +53,23 @@ public class PostService {
                 post.user().nickName());
     }
 
-    // post 작성 후 상세 페이지로 이동
     // POST /posts
-    public PostResponse addPost(PostRequest postRequest) {
+    public PostId addPost(PostRequest postRequest) {
         var newPost = new Post(PostId.Creator.generate(), postRequest.title(),
                 postRequest.contents(), null, null);
         PostId postId = postCommandActivity.addPost(newPost);
-        return this.post(postId);
+        return postId;
     }
 
-    public PostResponse modifyPost(PostId postId, PostRequest postRequest, String operatorId) {
+    // PUT /posts/{id}
+    public void modifyPost(PostId postId, PostRequest postRequest, String operatorId) {
         var post = new Post(postId, postRequest.title(), postRequest.contents(), Instant.now(),
                 new User(UserId.Creator.fromPublic(operatorId), ""));
         postCommandActivity.modifyPost(post);
-        return this.post(postId); // 필터링을 해야하므로 다시 조회
     }
 
-    public PagedData<PostResponse> removePost(PostId postId) {
+    // DELETE /posts/{id}
+    public void removePost(PostId postId) {
         postCommandActivity.removePost(postId);
-        return this.posts(SearchCondition.all(), new PageRequest(1, 10));
     }
 }

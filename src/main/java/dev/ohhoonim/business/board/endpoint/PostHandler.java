@@ -45,8 +45,7 @@ public class PostHandler implements Endpoint{
 
     public ServerResponse addPost(ServerRequest request) throws ServletException, IOException {
         var postRequest = request.body(PostRequest.class);
-        var newPost = postService.addPost(postRequest);
-        return ServerResponse.ok().body(newPost);
+        return ServerResponse.ok().body(postService.addPost(postRequest).toValue());
     }
 
     public ServerResponse modifyPost(ServerRequest request) throws ServletException, IOException {
@@ -54,12 +53,12 @@ public class PostHandler implements Endpoint{
         var postRequest = request.body(PostRequest.class);
         // var operator = request.principal();
         var operator = UserId.Creator.generate();
-        var newPost = postService.modifyPost(postId, postRequest, operator.getPublicValue());
-        return ServerResponse.ok().body(newPost);
+        postService.modifyPost(postId, postRequest, operator.getPublicValue());
+        return ServerResponse.ok().build();
     }
     public ServerResponse removePost(ServerRequest request) throws ServletException, IOException {
         var postId = PostId.Creator.fromPublic(request.pathVariable("id"));
-        var posts = postService.removePost(postId);
-        return ServerResponse.ok().body(posts);
+        postService.removePost(postId);
+        return ServerResponse.ok().build();
     }
 }

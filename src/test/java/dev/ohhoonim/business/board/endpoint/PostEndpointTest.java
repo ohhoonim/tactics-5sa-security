@@ -1,8 +1,9 @@
 package dev.ohhoonim.business.board.endpoint;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import java.time.Instant;
@@ -65,50 +66,29 @@ public class PostEndpointTest {
         tester.get().uri("/posts/{id}", postId.getRawValue())
             .contentType(MediaType.APPLICATION_JSON)
             .assertThat().hasStatusOk()
-            .apply(result -> {
-                // 그냥 이렇게도 해봤음. 
-                PostResponse response = objectMapper.readValue(
-                        result.getResponse().getContentAsString(), 
-                        PostResponse.class
-                    );
-                assertAll(
-                    () -> assertThat(response.postId().getRawValue())
-                        .isEqualTo(postId.getRawValue())
-                );
-            });
+            .bodyJson().extractingPath("$.data.postId").isEqualTo(postId.getPublicValue());
     }
 
     @Test
     void add_post_test() {
         var newPost = new PostRequest("new title", "new contents", "some nick") ;
         var newPostId = PostId.Creator.generate();
-        when(service.addPost(any())).thenReturn(
-            new PostResponse(newPostId, newPost.title(), 
-                newPost.contents(), Instant.now(), newPost.nickname())
-        );
+        when(service.addPost(any())).thenReturn(newPostId);
 
-        var json = tester.post().uri("/posts").contentType(MediaType.APPLICATION_JSON)
+        tester.post().uri("/posts").contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsBytes(newPost))
-            .assertThat().bodyJson();
+            .assertThat().bodyJson().extractingPath("$.data").isEqualTo(newPostId.getPublicValue());
 
-        assertAll(
-            () -> json.extractingPath("$.title").isEqualTo("new title"),
-            () -> json.extractingPath("$.postId").isEqualTo(newPostId.getPublicValue()) 
-        );
     }
 
     @Test
     void remove_post_test() {
         var postId = PostId.Creator.generate();
-        when(service.removePost(any())).thenReturn(new PagedData<PostResponse>(List.of(), new Paged(1, 10, 0)));
 
-        var json = tester.delete().uri("/posts/{id}", postId.getPublicValue())
-            .contentType(MediaType.APPLICATION_JSON)
-            .assertThat().bodyJson();
+        tester.delete().uri("/posts/{id}", postId.getPublicValue())
+            .contentType(MediaType.APPLICATION_JSON).exchange();
 
-        assertAll(
-            () -> json.extractingPath("$.contents").isEmpty()
-        );
+        verify(service, times(1)).removePost(eq(postId));
     }
 
 }

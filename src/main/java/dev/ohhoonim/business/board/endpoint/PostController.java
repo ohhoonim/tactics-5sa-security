@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/posts")
+@RequestMapping("/controller/posts")
 public class PostController {
     
     @GetMapping("{id}")

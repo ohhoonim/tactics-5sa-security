@@ -24,6 +24,9 @@ public class PostService {
         this.postCommandActivity = postCommandActivity;
     }
 
+    // 공통사항: pageRequest는 body로 받음
+
+    // GET /posts?q=  
     public PagedData<PostResponse> posts(SearchCondition searchCondition, PageRequest pageRequest) {
         PagedData<Post> pagedPost = postQueryActivity.searchPost(searchCondition, pageRequest);
         var responsePosts = pagedPost.contents().stream().map(p -> new PostResponse(p.postId(),
@@ -32,6 +35,7 @@ public class PostService {
         return new PagedData<PostResponse>(responsePosts, pagedPost.paged());
     }
 
+    // GET /posts/user/{id}
     public PagedData<PostResponse> postsByUser(UserId userId, PageRequest pageRequest) {
         User user = new User(userId, null);
         PagedData<Post> pagedPost = postQueryActivity.searchPostByUser(user, pageRequest);
@@ -39,18 +43,18 @@ public class PostService {
                 p.title(), p.contents(), p.lastModifiedAt(), p.user().nickName())).toList();
 
         return new PagedData<PostResponse>(responsePosts, pagedPost.paged());
-
     }
 
+    // GET /posts/{id}
     public PostResponse post(PostId postId) {
         Post post = postQueryActivity.detailPost(postId)
                 .orElseThrow(() -> new BoardException("post가 존재하지 않습니다."));
-        // FIXME masking 정책 적용해주세요.
         return new PostResponse(postId, post.title(), post.contents(), post.lastModifiedAt(),
                 post.user().nickName());
     }
 
     // post 작성 후 상세 페이지로 이동
+    // POST /posts
     public PostResponse addPost(PostRequest postRequest) {
         var newPost = new Post(PostId.Creator.generate(), postRequest.title(),
                 postRequest.contents(), null, null);

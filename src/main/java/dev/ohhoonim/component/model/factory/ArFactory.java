@@ -17,6 +17,7 @@ import tools.jackson.databind.PropertyNamingStrategies;
  */
 
 public interface ArFactory<A, I, C> {
+    <T extends C> T narrow(C component, Class<T> targetType);
 
     Map<Class<?>, Function<ResultSet, ? extends C>> registry();
 

@@ -1,7 +1,6 @@
 package dev.ohhoonim.business.board.endpoint;
 
 import java.io.IOException;
-import java.security.Principal;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.function.ServerRequest;
 import org.springframework.web.servlet.function.ServerResponse;

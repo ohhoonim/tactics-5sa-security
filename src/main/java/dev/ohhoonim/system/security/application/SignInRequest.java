@@ -1,9 +1,11 @@
 package dev.ohhoonim.system.security.application;
 
 import org.springframework.util.StringUtils;
+import dev.ohhoonim.component.model.payload.Dto;
 import dev.ohhoonim.system.security.model.BearerTokenErrorCode;
 import dev.ohhoonim.system.security.model.SecurityAuthenticationException;
 
+@Dto
 public record SignInRequest(String username, String password) {
     public SignInRequest {
         if (!StringUtils.hasText(username) || !StringUtils.hasText(password)) {

@@ -4,11 +4,20 @@ import dev.ohhoonim.component.model.unit.DomainException;
 
 @DomainException
 public class SecurityAuthenticationException extends RuntimeException {
-    public SecurityAuthenticationException(String message) {
-        super(message);
+
+    private final BearerTokenErrorCode errorCode;
+
+    public SecurityAuthenticationException(BearerTokenErrorCode errorCode) {
+        super(errorCode.getMessage());
+        this.errorCode = errorCode;
     }
 
-    public SecurityAuthenticationException(String message, Throwable e) {
-        super(message, e);
+    public SecurityAuthenticationException(BearerTokenErrorCode errorCode, Throwable e) {
+        super(errorCode.getMessage(), e);
+        this.errorCode = errorCode;
+    }
+
+    public BearerTokenErrorCode gTokenErrorCode() {
+        return this.errorCode;
     }
 }

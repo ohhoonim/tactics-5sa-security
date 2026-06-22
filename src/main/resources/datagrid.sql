@@ -7,9 +7,9 @@
 CREATE TABLE if not exists datagrid_schemas (
     grid_id      CHAR(26)  NOT NULL,
     columns_json JSONB        NOT NULL, 
-    created_at   TIMESTAMPZ NOT NULL,
+    created_at   TIMESTAMPTZ NOT NULL,
     created_by   VARCHAR(50)  NOT NULL,
-    modified_at  TIMESTAMPZ NOT NULL,
+    modified_at  TIMESTAMPTZ NOT NULL,
     modified_by  VARCHAR(50)  NOT NULL,
     PRIMARY KEY (grid_id)
 );

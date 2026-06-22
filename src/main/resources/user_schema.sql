@@ -1,5 +1,5 @@
 -- =============== user
-create table if not exists users (
+create table if not exists system_users (
     -- 1. 식별자 (Internal & External)
     user_id uuid not null,
     external_id uuid not null,
@@ -10,7 +10,7 @@ create table if not exists users (
     employee_no text,
     email text not null,
     department_id uuid,
-    position text,
+    job_position text,
     job_role text,
     
     -- 3. 계정 자격 증명
@@ -26,10 +26,10 @@ create table if not exists users (
     modified_by uuid not null,
 
     -- 제약 조건 명명 (콤마 추가 및 중복 정리)
-    constraint pk_users primary key (user_id),
-    constraint uk_users_external_id unique (external_id),
-    constraint uk_users_email unique (email),
-    constraint uk_users_username unique (username) -- Login ID 중복 방지 추가
+    constraint pk_system_users primary key (user_id),
+    constraint uk_system_users_external_id unique (external_id),
+    constraint uk_system_users_email unique (email),
+    constraint uk_system_users_username unique (username) -- Login ID 중복 방지 추가
 );
 
 -- 인덱스 관련 참고:
@@ -38,7 +38,7 @@ create table if not exists users (
 -- 따라서 별도의 CREATE INDEX 문은 자원 낭비이므로 작성하지 않아도 됩니다.
 
 -- (선택) 조회가 빈번한 Auditing 컬럼에 대한 인덱스
-create index idx_users_created_at on users(created_at);
+create index idx_system_users_created_at on system_users(created_at);
 
 -- insert into system_users  (user_id, status, username, email, password, last_login_at,
 -- created_at, created_by, modified_at, modified_by )

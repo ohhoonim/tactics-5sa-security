@@ -1,7 +1,6 @@
 package dev.ohhoonim.system.user.model;
 
 import java.time.Instant;
-import dev.ohhoonim.component.model.state.StateTransitionPolicy;
 import dev.ohhoonim.component.model.unit.BaseEntity;
 import dev.ohhoonim.system.user.model.UserComponent.AccessSecurity;
 import dev.ohhoonim.system.user.model.UserComponent.AuthorityDelegation;

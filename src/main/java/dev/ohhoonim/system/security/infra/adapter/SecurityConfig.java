@@ -34,8 +34,8 @@ public class SecurityConfig {
         boolean isProd = Arrays.asList(env.getActiveProfiles()).contains("prod");
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable()).authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/", "/css/**", "/js/**", "/images/**", "/sign/in",
-                            "/sign/refresh", "/error").permitAll().anyRequest().authenticated();
+                    auth.requestMatchers("/", "/css/**", "/js/**", "/images/**", "/sign/**",
+                            "/error").permitAll().anyRequest().authenticated();
                 }).sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .headers(headers -> {
                     if (!isProd) {

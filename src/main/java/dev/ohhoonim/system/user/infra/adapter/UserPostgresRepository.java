@@ -31,9 +31,8 @@ public class UserPostgresRepository implements UserPersistencePort {
     public Optional<User> findByUsername(String username) {
         var columns = userFactory.forLogin();
         String sql = """
-                SELECT %s FROM system_users 
-                WHERE username = :username
-                """.formatted(userFactory.resolveRequiredColumns(columns));
+            SELECT %s FROM system_users u WHERE u.username = :username
+            """.formatted(userFactory.resolveRequiredColumns(columns));
         return jdbcClient.sql(sql).param("username", username)
             .query(userMapper.apply(userFactory, columns)).optional();
     }

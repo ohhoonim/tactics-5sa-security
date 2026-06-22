@@ -1,0 +1,9 @@
+POST /sign/in HTTP/1.1
+Content-Type: application/json
+Content-Length: 76
+Host: localhost:8080
+
+{
+  "username" : "tester",
+  "password" : "password123"
+}

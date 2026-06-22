@@ -25,7 +25,7 @@ public sealed interface UserComponent permits UserProfile, LoginInfo, PasswordCr
             String employeeNo, // 사번
             String email, // 이메일
             UUID departmentId, // 부서 ID
-            String position, // 직급
+            String jobPosition, // 직급
             String jobRole // 직무
     ) implements UserComponent {
 

@@ -14,7 +14,7 @@ public sealed interface JwtTokenStatus extends
         @Override
         public TransitionResult<JwtTokenStatus, JwtToken> trigger(
                 JwtTokenTransitionEvent event) {
-            throw new SecurityAuthenticationException("처리가능하지 않은 이벤트입니다.");
+            throw new SecurityAuthenticationException(BearerTokenErrorCode.NOT_ALLOWED);
         }
 
     }
@@ -25,7 +25,7 @@ public sealed interface JwtTokenStatus extends
                 JwtTokenTransitionEvent event) {
             return switch(event) {
                 case JwtTokenTransitionEvent.VerifySuccess e -> new JwtTokenTransitionResult(new JwtTokenStatus.Verified(), e.actions());
-                default -> throw new RuntimeException();
+                default -> throw new SecurityAuthenticationException(BearerTokenErrorCode.NOT_ALLOWED);
             };
         }
 

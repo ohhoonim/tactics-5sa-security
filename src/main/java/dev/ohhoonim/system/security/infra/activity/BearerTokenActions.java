@@ -24,7 +24,8 @@ public class BearerTokenActions implements BearerTokenActivity {
     public JwtToken verifyWith(String token) {
         Claims claims = tokenPort.getClaims(token);
 
-        var principal = new JwtPrincipal(claims.getSubject());
+        var principal = JwtPrincipal.Creator.fromPublic(claims.getSubject());
+        // credential 정보 유지하지 않음. authority 정보 사용하지 않음.
         var jwtToken = JwtToken.reconstitute(principal, null, null);
         jwtToken.tokenStateTransition(new VerifySuccess(), policy);
 

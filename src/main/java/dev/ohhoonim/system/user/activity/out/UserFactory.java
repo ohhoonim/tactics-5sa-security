@@ -22,7 +22,7 @@ public interface UserFactory extends ArFactory<User, UserId, UserComponent>{
             try {
                 return mapper.map(rs);
             } catch (SQLException e) {
-                throw new UserException("처리할 수 없는 컬럼이 존재합니다.", e);
+                throw new UserException("처리할 수 없는 컬럼이 존재합니다." + e.getMessage(), e);
             }
         };
     } 

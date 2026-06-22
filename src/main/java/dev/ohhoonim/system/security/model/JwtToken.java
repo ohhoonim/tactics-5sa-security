@@ -35,6 +35,7 @@ public class JwtToken implements Authentication, Entity<JwtPrincipal> {
         this.principal = principal;
         this.token = token;
         this.authorites = authorites;
+        this.authenticated = new UnVerified();
     }
 
     @Override
@@ -69,7 +70,7 @@ public class JwtToken implements Authentication, Entity<JwtPrincipal> {
 
     @Override
     public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
-        throw new SecurityAuthenticationException("use JwtTokenStatus");
+        throw new SecurityAuthenticationException(BearerTokenErrorCode.NOT_ALLOWED);
     }
 
     public void setJwtTokenStatus(JwtTokenStatus status) {

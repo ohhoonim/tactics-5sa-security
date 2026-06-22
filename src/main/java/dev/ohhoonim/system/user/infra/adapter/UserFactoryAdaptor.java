@@ -10,7 +10,9 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.springframework.stereotype.Component;
 import dev.ohhoonim.component.model.unit.Adapter;
+import dev.ohhoonim.component.model.unit.Factory;
 import dev.ohhoonim.system.user.activity.out.UserFactory;
 import dev.ohhoonim.system.user.model.User;
 import dev.ohhoonim.system.user.model.UserComponent;
@@ -26,7 +28,8 @@ import dev.ohhoonim.system.user.model.UserComponent.UserProfile;
 import dev.ohhoonim.system.user.model.UserId;
 import dev.ohhoonim.system.user.model.UserStatus;
 
-@Adapter
+@Factory
+@Component
 public class UserFactoryAdaptor implements UserFactory {
 
     private final Map<Class<?>, Function<ResultSet, ? extends UserComponent>> registry =
@@ -37,14 +40,14 @@ public class UserFactoryAdaptor implements UserFactory {
                        rs.getString("employee_no") ,
                        rs.getString("email") ,
                        rs.getObject("department_id", UUID.class) ,
-                       rs.getString("position") ,
+                       rs.getString("job_position") ,
                        rs.getString("job_role") )
                 ),
                 LoginInfo.class, wrap(rs -> 
                     new LoginInfo(
                        rs.getString("password") ,
-                       rs.getObject("last_login_at", Instant.class),
-                       rs.getInt("failed_login_attemp"),
+                       null, //rs.getObject("last_login_at", Instant.class),
+                       rs.getInt("failed_login_attempt"),
                        AuthSourceCode.fromString(rs.getString("auth_source"))
                 )
             ));
@@ -87,17 +90,17 @@ public class UserFactoryAdaptor implements UserFactory {
             null, 
             null, 
             null, 
-            rs.getObject("created_at", Instant.class),
-            rs.getString("created_by"),
-            rs.getObject("modified_at", Instant.class),
-            rs.getString("modified_by")
+            rs.getTimestamp("created_at").toInstant(),
+            rs.getObject("created_by", UUID.class).toString(),
+            rs.getTimestamp("modified_at").toInstant(),
+            rs.getObject("modified_by", UUID.class).toString()
             );
     }
 
     @Override
     public String resolveRequiredColumns(List<Class<? extends UserComponent>> columnTypes) {
         List<String> defaultColumns = new ArrayList<>();
-        defaultColumns.addAll(List.of("user_id", "external_id", "created_at", "created_by", "modified_at",
+        defaultColumns.addAll(List.of("user_id", "external_id", "status", "created_at", "created_by", "modified_at",
                 "modified_by"));
        
         return Stream.concat(defaultColumns.stream(), dynamicColumns(columnTypes).stream())

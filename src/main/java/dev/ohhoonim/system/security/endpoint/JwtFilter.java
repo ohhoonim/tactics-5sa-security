@@ -26,27 +26,22 @@ public class JwtFilter extends OncePerRequestFilter implements Endpoint {
             FilterChain filterChain) throws ServletException, IOException {
 
         extractBearerToken(request).ifPresent(token -> {
-            try {
-                var unAuthToken = new JwtToken(token);
-                var authResult = authenticationManager.authenticate(unAuthToken);
-                if (authResult.isAuthenticated()) {
-                    SecurityContextHolder.getContext().setAuthentication(authResult);
-                }
-            } catch(Exception e) {
-                SecurityContextHolder.clearContext();
-                throw new SecurityAuthenticationException("유효하지 않은 토큰입니다.");
+            var unAuthToken = new JwtToken(token);
+            var authResult = authenticationManager.authenticate(unAuthToken);
+            if (authResult.isAuthenticated()) {
+                SecurityContextHolder.getContext().setAuthentication(authResult);
             }
-            });
+        });
 
         filterChain.doFilter(request, response);
     }
 
     private Optional<String> extractBearerToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
-        if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return Optional.of(bearerToken.substring(7));
         }
         return Optional.empty();
     }
-    
+
 }

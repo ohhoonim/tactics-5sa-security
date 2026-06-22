@@ -30,7 +30,11 @@
     "5sa.StatePolicy": {
       "name": "State Policy",
       "assignments": [
-        "dev.ohhoonim.component.model.state.StateTransitionPolicy"
+        "dev.ohhoonim.component.model.state.StateTransitionPolicy",
+        "dev.ohhoonim.component.model.state.PostAction",
+        "dev.ohhoonim.component.model.state.Status",
+        "dev.ohhoonim.component.model.state.TransitionEvent",
+        "dev.ohhoonim.component.model.state.TransitionResult"
       ],
       "groups": [
         "5sa"

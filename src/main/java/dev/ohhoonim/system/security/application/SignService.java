@@ -49,6 +49,6 @@ public class SignService {
         if (refreshed == null) {
             throw new SecurityAuthenticationException(BearerTokenErrorCode.TOKEN_REFRESH_FAIL);
         }
-        return null;
+        return refreshed;
     }
 }

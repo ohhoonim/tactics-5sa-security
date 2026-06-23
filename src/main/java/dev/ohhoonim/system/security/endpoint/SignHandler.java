@@ -39,9 +39,7 @@ public class SignHandler implements Endpoint {
     }
 
     public ServerResponse refresh(ServerRequest request) {
-        String refreshToken = request.cookies().getFirst("refresh-token") != null
-                ? request.cookies().getFirst("refresh-token").getValue()
-                : request.headers().firstHeader("Refresh-Token");
+        String refreshToken = request.cookies().getFirst("refresh-token").getValue();
 
         if (refreshToken == null || refreshToken.isBlank()) {
             return ServerResponse.badRequest().build();

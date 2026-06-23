@@ -2,8 +2,7 @@ package dev.ohhoonim.system.security.model;
 
 import dev.ohhoonim.component.model.unit.DomainException;
 
-@DomainException
-public class SecurityAuthenticationException extends RuntimeException {
+public class SecurityAuthenticationException extends DomainException {
 
     private final BearerTokenErrorCode errorCode;
 
@@ -17,7 +16,8 @@ public class SecurityAuthenticationException extends RuntimeException {
         this.errorCode = errorCode;
     }
 
-    public BearerTokenErrorCode gTokenErrorCode() {
-        return this.errorCode;
+    @Override
+    public String errorCode() {
+        return this.errorCode.getCode();
     }
 }

@@ -7,3 +7,24 @@ Host: localhost:8080
   "username" : "tester",
   "password" : "password123"
 }
+
+###
+# 쿠키정보를 기억하지 않도록 설정에서 해제하기 cokie로 검색 
+POST /sign/refresh HTTP/1.1
+Content-Type: application/json
+Content-Length: 76
+Host: localhost:8080
+Cookie: refresh-token=abc;path=tt
+
+###
+
+GET /posts?q= HTTP/1.그
+Content-Type: application/json
+Content-Length: 76
+Host: localhost:8080
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMTllZWUyOC02MjYyLWM4NjYtNTMxMC0zOWIxMDNiNzBkNWMiLCJleHAiOjE3ODIxODY3NjgsImlhdCI6MTc4MjE4MzE2OH0.gV07DEbhOI3YI_Hj9_o4E_l__iXKnUQYAGPQcDpZGDgowt1gNh8g6mSxZfDoviwb6mlPhBKfRXcZlXCTpW0NOQ
+
+{
+  "pageNo": 1,
+  "pageSize": 10
+}

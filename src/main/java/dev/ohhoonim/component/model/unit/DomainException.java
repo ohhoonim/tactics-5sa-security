@@ -1,8 +1,13 @@
 package dev.ohhoonim.component.model.unit;
 
-import org.jmolecules.stereotype.Stereotype;
+public abstract class DomainException extends RuntimeException {
+    public abstract String errorCode();
 
-@Stereotype
-public @interface DomainException {
-    
+    public DomainException(String message) {
+        super(message);
+    }
+
+    public DomainException(String message, Throwable e) {
+        super(message, e);
+    }
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import dev.ohhoonim.component.model.payload.Response.Fail;
+import dev.ohhoonim.component.model.unit.DomainException;
 import jakarta.servlet.http.HttpServletRequest;
 import tools.jackson.core.JacksonException;
 import tools.jackson.databind.ObjectMapper;
@@ -98,7 +99,14 @@ public class DefaultResponseHandler implements ResponseBodyAdvice<Object> {
     ResponseEntity<Response> defaultErrorHandler(HttpServletRequest request, Exception e)
             throws Exception {
         log.error("{}", e.getMessage());
-        return ResponseEntity.ok(new Fail<>(ResponseCode.ERROR, e.getMessage(), null));
+        return ResponseEntity.ok(new Fail<>(ResponseCode.ERROR, "", e.getMessage(), null));
+    }
+
+    @ExceptionHandler(DomainException.class)
+    ResponseEntity<Response> domainErrorHandler(HttpServletRequest request, DomainException e)
+            throws Exception {
+        log.error("{}: {}", e.errorCode(), e.getMessage());
+        return ResponseEntity.ok(new Fail<>(ResponseCode.ERROR, e.errorCode(), e.getMessage(), null));
     }
 
 }

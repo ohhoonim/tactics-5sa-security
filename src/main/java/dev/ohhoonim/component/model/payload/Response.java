@@ -13,6 +13,7 @@ public sealed interface Response extends Payload {
 
     public record Fail<T> (
         ResponseCode code,
+        String errorCode,
         String message,
         T data
     ) implements Response { }

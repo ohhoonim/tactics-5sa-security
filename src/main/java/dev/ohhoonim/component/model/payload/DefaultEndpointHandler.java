@@ -7,8 +7,10 @@ import org.springframework.web.servlet.function.HandlerFilterFunction;
 import org.springframework.web.servlet.function.HandlerFunction;
 import org.springframework.web.servlet.function.ServerRequest;
 import org.springframework.web.servlet.function.ServerResponse;
+import dev.ohhoonim.component.model.unit.DomainException;
 
-public class DefaultEndpointHandler implements HandlerFilterFunction<ServerResponse, ServerResponse> {
+public class DefaultEndpointHandler
+        implements HandlerFilterFunction<ServerResponse, ServerResponse> {
 
     @Override
     public ServerResponse filter(ServerRequest request, HandlerFunction<ServerResponse> next)
@@ -27,7 +29,6 @@ public class DefaultEndpointHandler implements HandlerFilterFunction<ServerRespo
                         && !contentType.isCompatibleWith(MediaType.APPLICATION_JSON)) {
                     return response;
                 }
-
                 return ServerResponse.from(response).contentType(MediaType.APPLICATION_JSON)
                         .body(new Response.Success<>(ResponseCode.SUCCESS, body));
             } else if (response.statusCode().is2xxSuccessful()) {
@@ -35,11 +36,13 @@ public class DefaultEndpointHandler implements HandlerFilterFunction<ServerRespo
                 return ServerResponse.from(response).contentType(MediaType.APPLICATION_JSON)
                         .body(new Response.Success<>(ResponseCode.SUCCESS, null));
             }
-
             return response;
+        } catch (DomainException e) {
+            return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(
+                    new Response.Fail<>(ResponseCode.ERROR, e.errorCode(), e.getMessage(), null));
         } catch (Exception e) {
             return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON)
-                    .body(new Response.Fail<>(ResponseCode.ERROR, e.getMessage(), null));
+                    .body(new Response.Fail<>(ResponseCode.ERROR, "", e.getMessage(), null));
         }
     };
 }

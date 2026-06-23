@@ -103,10 +103,10 @@
         "5sa"
       ]
     },
-    "5sa.Exception": {
-      "name": "Adapter",
+    "5sa.DomainException": {
+      "name": "Domain Exception",
       "assignments": [
-        "@dev.ohhoonim.component.model.unit.DomainException"
+        "dev.ohhoonim.component.model.unit.DomainException"
       ],
       "groups": [
         "5sa"

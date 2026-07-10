@@ -50,7 +50,7 @@
       ]
     },
     "5sa.Endpoint": {
-      "name": "DTO",
+      "name": "Endpoint",
       "assignments": [
         "dev.ohhoonim.component.model.unit.Endpoint"
       ],
@@ -95,7 +95,7 @@
       ]
     },
     "5sa.Policy": {
-      "name": "Adapter",
+      "name": "Policy",
       "assignments": [
         "@dev.ohhoonim.component.model.unit.Policy"
       ],
@@ -106,6 +106,7 @@
     "5sa.DomainException": {
       "name": "Domain Exception",
       "assignments": [
+        "@dev.ohhoonim.component.model.unit.DomainErrorCode",
         "dev.ohhoonim.component.model.unit.DomainException"
       ],
       "groups": [

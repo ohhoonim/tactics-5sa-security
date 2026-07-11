@@ -1,13 +1,32 @@
-# Security domain model
+# Security domain 모듈 (feat. Spring Security)
 
-## 버려야 할 편견
+### Spring Security를 제대로 사용하려면
 
-- Spring Security는 로그인할 때 사용하는 것이 아니다. 로그인은 별개의 애플리케이션 서비스이다.
-- Layered, Hexagonal 아키텍처는 DDD 구성요소를 완전히 설명하지 못한다. 
+- Spring Security는 로그인할 때의 Endpoint일 뿐이다. User 도메인은 거들뿐이다.
+- SecurityFilterChain은 로그인과 별개로 동작한다. authentication, authrization, sigin 
+- 인증시 사용되는 보안로직(JWT, OAuth2, MFA 등)을 공유할 뿐이다.
+- 기존의 아키텍쳐는 잊자. 쪼개야 산다
+
+## 인증인가 도메인과 User도메인의 로그인
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Client as 클라이언트
+    participant Auth as 인증/인가 도메인
+    participant User as User 도메인
+
+    Client->>Auth: 로그인 요청 (ID, PW)
+    Auth->>User: 사용자 검증 요청 (ID, PW)
+    User->>User: DB 조회 및 PW 검증
+    User-->>Auth: 검증 결과 반환 (User ID 또는 성공 여부)
+    Auth->>Auth: 토큰 생성
+    Auth-->>Client: 토큰 전달 (Access Token 등)
+```
 
 ## DDD 구성요소
 
-## 요약 목록
+### 요약 목록
 
 * 도메인 모델링 구성요소: Entity, Value Object, Aggregate, Factory, Repository
 * 도메인 로직 및 제어 구성요소: Domain Service, Application Service
@@ -82,7 +101,7 @@ classDiagram
     AuthenticationProvider --> UserDetailsService : uses
 ```
 
-## DDD 관점에서의 분류
+### DDD 관점에서의 분류
 
 * Aggregate Root (애그리거트 루트)
     * `SecurityFilterChain`: 보안 필터 체인의 진입점이자 전체 필터 목록을 관리하는 경계 역할을 합니다.
